@@ -1,0 +1,15 @@
+# Core Dependencies
+gymnasium==1.2.1
+numpy>=1.24.0
+torch>=2.0.0
+matplotlib>=3.7.0
+tqdm>=4.65.0
+opencv-python>=4.8.0
+
+# Environment-specific
+ale-py>=0.8.1
+Box2D>=2.3.10
+
+# Utilities
+scipy>=1.10.0
+pillow>=10.0.0

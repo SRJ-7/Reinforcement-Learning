@@ -1,0 +1,104 @@
+================================================================================
+BATCH SIZE IMPACT STUDY - CartPole-v1
+================================================================================
+
+OVERVIEW
+--------------------------------------------------------------------------------
+Environment: CartPole-v1
+Batch Sizes Tested: [5, 10, 20, 50, 100]
+Iterations per Run: 100
+Configuration: RTG + Advantage Normalization + Constant Baseline
+
+DETAILED RESULTS
+================================================================================
+
+1. BATCH SIZE = 5
+--------------------------------------------------------------------------------
+   Best Average Reward:        100.40
+   Final Average Reward:       73.20
+   Solved at Iteration:        Not solved
+   Total Training Time:        0.52 minutes
+   Avg Time per Iteration:     0.310 seconds
+   Avg Return Std Dev:         19.75
+   Avg Advantage Variance:     500.03
+   Avg Policy Loss:            -0.0041
+
+2. BATCH SIZE = 10
+--------------------------------------------------------------------------------
+   Best Average Reward:        49.00
+   Final Average Reward:       31.00
+   Solved at Iteration:        Not solved
+   Total Training Time:        0.81 minutes
+   Avg Time per Iteration:     0.485 seconds
+   Avg Return Std Dev:         13.31
+   Avg Advantage Variance:     620.23
+   Avg Policy Loss:            0.0012
+
+3. BATCH SIZE = 20
+--------------------------------------------------------------------------------
+   Best Average Reward:        35.40
+   Final Average Reward:       24.50
+   Solved at Iteration:        Not solved
+   Total Training Time:        1.57 minutes
+   Avg Time per Iteration:     0.942 seconds
+   Avg Return Std Dev:         12.75
+   Avg Advantage Variance:     605.37
+   Avg Policy Loss:            0.0009
+
+4. BATCH SIZE = 50
+--------------------------------------------------------------------------------
+   Best Average Reward:        22.80
+   Final Average Reward:       16.52
+   Solved at Iteration:        Not solved
+   Total Training Time:        3.16 minutes
+   Avg Time per Iteration:     1.897 seconds
+   Avg Return Std Dev:         7.71
+   Avg Advantage Variance:     442.30
+   Avg Policy Loss:            0.0011
+
+5. BATCH SIZE = 100
+--------------------------------------------------------------------------------
+   Best Average Reward:        28.01
+   Final Average Reward:       26.08
+   Solved at Iteration:        Not solved
+   Total Training Time:        7.87 minutes
+   Avg Time per Iteration:     4.724 seconds
+   Avg Return Std Dev:         11.60
+   Avg Advantage Variance:     204.06
+   Avg Policy Loss:            0.0005
+
+COMPARATIVE ANALYSIS
+================================================================================
+
+🏆 Best Performance:           Batch Size 5 (Reward: 100.40)
+📊 Most Stable Learning:       Batch Size 50 (Avg Std: 7.71)
+⏱️  Fastest Training:           Batch Size 5 (0.52 minutes)
+🎯 Best Gradient Estimates:    Batch Size 100 (Avg Adv Var: 204.06)
+
+KEY INSIGHTS
+================================================================================
+
+1. VARIANCE REDUCTION:
+   Larger batch sizes generally reduce gradient variance, leading to more
+   stable policy updates. This is evident from the advantage variance metric.
+
+2. COMPUTATIONAL COST:
+   Time per iteration increases linearly with batch size, but total training
+   time depends on convergence speed. Larger batches may converge in fewer
+   iterations but take longer per iteration.
+
+3. SAMPLE EFFICIENCY:
+   There's a trade-off: smaller batches allow more frequent updates but with
+   higher variance. Larger batches provide better gradient estimates but
+   slower policy improvement per collected sample.
+
+4. LEARNING STABILITY:
+   Return variance typically decreases with larger batch sizes, indicating
+   more consistent performance across episodes within each iteration.
+
+RECOMMENDATION:
+--------------------------------------------------------------------------------
+For CartPole-v1:
+  - Best performance: Batch size 5
+  - Most stable: Batch size 50
+  Choose based on your priority (performance vs stability).

@@ -1,0 +1,28 @@
+Policy Gradient Comparison Results
+==================================================
+
+No RTG, No Norm:
+  Final Avg Reward: -234.14
+  Best Avg Reward: -113.09
+  Iterations to solve (>= 475): Not solved
+--------------------------------------------------
+RTG, No Norm:
+  Final Avg Reward: 131.99
+  Best Avg Reward: 133.46
+  Iterations to solve (>= 475): Not solved
+--------------------------------------------------
+RTG + Norm:
+  Final Avg Reward: 167.41
+  Best Avg Reward: 187.90
+  Iterations to solve (>= 475): Not solved
+--------------------------------------------------
+RTG + Norm + Constant Baseline:
+  Final Avg Reward: 150.18
+  Best Avg Reward: 211.65
+  Iterations to solve (>= 475): Not solved
+--------------------------------------------------
+RTG + Norm + State Baseline:
+  Final Avg Reward: 159.25
+  Best Avg Reward: 191.19
+  Iterations to solve (>= 475): Not solved
+--------------------------------------------------

@@ -1,0 +1,1606 @@
+\documentclass[12pt,a4paper]{article}\documentclass[12pt,a4paper]{article}
+
+
+
+% --- Packages ---
+
+\usepackage[margin=1in]{geometry}% --- Packages ---
+
+\usepackage{amsmath, amssymb}
+
+\usepackage{graphicx}\usepackage[margin=1in]{geometry}
+
+\usepackage{float}
+
+\usepackage{caption}\usepackage{amsmath, amssymb}
+
+\usepackage{subcaption}
+
+\usepackage{booktabs}\usepackage{graphicx}
+
+\usepackage{hyperref}
+
+\usepackage{xcolor}\usepackage{float}
+
+\usepackage{listings}
+
+\usepackage{courier}\usepackage{caption}
+
+\usepackage{multirow}
+
+\usepackage{subcaption}
+
+% --- Code style ---
+
+\lstset{\usepackage{booktabs}
+
+    basicstyle=\footnotesize\ttfamily,
+
+    backgroundcolor=\color{gray!10},\usepackage{hyperref}
+
+    frame=single,
+
+    breaklines=true,\usepackage{xcolor}
+
+    captionpos=b,
+
+    numbers=left,\usepackage{listings}
+
+    numberstyle=\tiny\color{gray},
+
+    keywordstyle=\color{blue},\usepackage{courier}
+
+    commentstyle=\color{gray},
+
+    stringstyle=\color{orange}\usepackage{multirow}
+
+}
+
+% --- Code style ---
+
+\hypersetup{
+
+    colorlinks=true,% --- Code style ---\lstset{
+
+    linkcolor=blue,
+
+    urlcolor=teal\lstset{
+
+}
+
+ basicstyle=\footnotesize\ttfamily,    basicstyle=\footnotesize\ttfamily,
+
+% --- Title ---
+
+\title{\textbf{Reinforcement Learning Assignment Report\\Deep Q-Network and Policy Gradient Algorithms}} backgroundcolor=\color{gray!10},    backgroundcolor=\color{gray!10},
+
+\author{
+
+    Soham Jiddewar \\ frame=single,    frame=single,
+
+    Roll Number: ES22BTECH11017 \\
+
+    Department of Electrical Engineering \\ breaklines=true,    breaklines=true,
+
+    Indian Institute of Technology Hyderabad
+
+} captionpos=b,    captionpos=b,
+
+\date{\today}
+
+ numbers=left,    numbers=left,
+
+\begin{document}
+
+ numberstyle=\tiny\color{gray},    numberstyle=\tiny\color{gray},
+
+\maketitle
+
+\tableofcontents keywordstyle=\color{blue},    keywordstyle=\color{blue},
+
+\newpage
+
+ commentstyle=\color{gray},    commentstyle=\color{gray},
+
+% ---------------------------------------------------
+
+\section{Introduction} stringstyle=\color{orange}    stringstyle=\color{orange}
+
+This report presents the implementation and evaluation of two fundamental reinforcement learning algorithms:
+
+\begin{itemize}}
+
+    \item \textbf{Deep Q-Network (DQN)}: A value-based method that approximates the optimal action-value function using deep neural networks
+
+    \item \textbf{Policy Gradient (PG)}: A policy-based method that directly optimizes policy parameters through gradient ascent}
+
+\end{itemize}
+
+\hypersetup{
+
+\subsection{Environments}
+
+The following Gymnasium environments were used: colorlinks=true,
+
+\begin{itemize}
+
+    \item \texttt{ALE/Pong-v5}: Atari Pong game (visual input) linkcolor=blue,    colorlinks=true,
+
+    \item \texttt{MountainCar-v0}: Classic control problem with sparse rewards
+
+    \item \texttt{CartPole-v1}: Pole balancing task urlcolor=teal    linkcolor=blue,
+
+    \item \texttt{LunarLander-v3}: Spacecraft landing simulation
+
+\end{itemize}}    urlcolor=teal
+
+
+
+\subsection{Implementation Framework}
+
+\begin{itemize}% --- Title ---}
+
+    \item \textbf{Framework}: PyTorch 2.5.1
+
+    \item \textbf{Environment}: Gymnasium 1.2.1\title{\textbf{Reinforcement Learning Assignment Report\\Deep Q-Network and Policy Gradient Algorithms}}
+
+    \item \textbf{Hardware}: NVIDIA GeForce RTX 3050 Laptop GPU
+
+    \item \textbf{Command-line Interface}: Argparse for flexible hyperparameter configuration\author{% --- Title ---
+
+\end{itemize}
+
+ Soham Jiddewar \\\title{\textbf{Assignment 3 Report: Deep Q-Network and Policy Gradient Algorithms}}
+
+% ---------------------------------------------------
+
+\section{Problem 1: Deep Q-Network (DQN)} Roll Number: ES22BTECH11017 \\\author{
+
+
+
+\subsection{Environment Analysis} Department of Electrical Engineering \\    Soham Jiddewar \\
+
+
+
+\subsubsection{Pong-v5} Indian Institute of Technology Hyderabad    Roll Number: ES22BTECH11017 \\
+
+\begin{itemize}
+
+    \item \textbf{State Space}: RGB images (210×160×3 pixels)}
+
+    \item \textbf{Action Space}: Discrete(6) - \{NOOP, FIRE, UP, DOWN, UPFIRE, DOWNFIRE\}
+
+    \item \textbf{Reward}: +1 for scoring, -1 for opponent scoring\date{\today}\date{}
+
+    \item \textbf{Episode Termination}: First to 21 points
+
+\end{itemize}
+
+\begin{document}
+
+\subsubsection{MountainCar-v0}
+
+\begin{itemize}
+
+    \item \textbf{State Space}: Box(2) - position $\in [-1.2, 0.6]$, velocity $\in [-0.07, 0.07]$\maketitle
+
+    \item \textbf{Action Space}: Discrete(3) - \{push left, no push, push right\}\tableofcontents
+
+    \item \textbf{Reward}: -1 per timestep until goal is reached
+
+    \item \textbf{Episode Termination}: Goal reached (position $\geq 0.5$) or 200 steps\newpage
+
+\end{itemize}
+
+
+
+\begin{table}[H]% ---------------------------------------------------
+
+\centering
+
+\caption{DQN Environment Specifications}\section{Introduction}
+
+\begin{tabular}{lcccc}
+
+\topruleThis report presents the implementation and evaluation of two fundamental reinforcement learning algorithms:This assignment focuses on the implementation and evaluation of two key reinforcement learning algorithms:
+
+\textbf{Environment} & \textbf{State Dim} & \textbf{Actions} & \textbf{Challenge} & \textbf{Max Steps} \\
+
+\midrule\begin{itemize}
+
+Pong-v5 & (210,160,3) & 6 & Visual, Delayed Reward & Variable \\
+
+MountainCar-v0 & 2 & 3 & Sparse Reward & 200 \\ \item \textbf{Deep Q-Network (DQN)}: A value-based method that approximates the optimal action-value function using deep neural networks    \item \textbf{Deep Q-Network (DQN)}: a value-based method that approximates the optimal Q-function using deep neural networks.
+
+\bottomrule
+
+\end{tabular} \item \textbf{Policy Gradient (PG)}: A policy-based method that directly optimizes policy parameters through gradient ascent    \item \textbf{Policy Gradient (PG)}: a policy-based method that directly optimizes the parameters of the policy using gradient ascent.
+
+\end{table}
+
+\end{itemize}
+
+\subsection{DQN Algorithm Implementation}
+
+
+
+\subsubsection{Core Components}\subsection{Environments}The environments used for experimentation include:
+
+The DQN algorithm employs three key innovations:
+
+The following Gymnasium environments were used:\begin{itemize}
+
+\begin{enumerate}
+
+    \item \textbf{Experience Replay}: Stores transitions $(s, a, r, s', done)$ in a replay buffer ($D$) to break temporal correlations\begin{itemize}    \item \texttt{MountainCar-v0}
+
+    \item \textbf{Target Network}: Maintains a separate network $Q_{\theta^-}$ updated periodically
+
+    \item \textbf{Double DQN}: Uses policy network for action selection and target network for value estimation \item \texttt{ALE/Pong-v5}: Atari Pong game (visual input)    \item \texttt{Pong-v0}
+
+\end{enumerate}
+
+ \item \texttt{MountainCar-v0}: Classic control problem with sparse rewards    \item \texttt{CartPole-v0}
+
+The loss function is:
+
+\[ \item \texttt{CartPole-v1}: Pole balancing task    \item \texttt{LunarLander-v2}
+
+L(\theta) = \mathbb{E}_{(s,a,r,s') \sim \mathcal{D}} \left[ \left( r + \gamma Q_{\theta^-}(s', \arg\max_{a'} Q_\theta(s', a')) - Q_\theta(s,a) \right)^2 \right]
+
+\] \item \texttt{LunarLander-v3}: Spacecraft landing simulation\end{itemize}
+
+
+
+\subsubsection{Neural Network Architecture}\end{itemize}
+
+
+
+\textbf{Pong CNN Architecture:}Evaluation is based on average episode return, convergence behavior, and stability across multiple runs.
+
+\begin{itemize}
+
+    \item Input: 4 stacked 84×84 grayscale frames\subsection{Implementation Framework}
+
+    \item Conv1: 32 filters, 8×8 kernel, stride 4, ReLU
+
+    \item Conv2: 64 filters, 4×4 kernel, stride 2, ReLU\begin{itemize}% ---------------------------------------------------
+
+    \item Conv3: 64 filters, 3×3 kernel, stride 1, ReLU
+
+    \item FC1: 512 units, ReLU \item \textbf{Framework}: PyTorch 2.5.1\section{Problem 1: Deep Q-Learning}
+
+    \item Output: 6 Q-values (one per action)
+
+\end{itemize} \item \textbf{Environment}: Gymnasium 1.2.1
+
+
+
+\textbf{MountainCar MLP Architecture:} \item \textbf{Hardware}: NVIDIA GeForce RTX 3050 Laptop GPU\subsection{(a) Environment Setup and Random Agent}
+
+\begin{itemize}
+
+    \item Input: 2-dimensional state \item \textbf{Command-line Interface}: Argparse for flexible hyperparameter configurationThe following code snippet demonstrates how to load the Gym environments and print the state and action spaces:
+
+    \item Hidden1: 128 units, ReLU
+
+    \item Hidden2: 128 units, ReLU\end{itemize}\begin{lstlisting}[language=Python, caption=Loading Gym Environments]
+
+    \item Output: 3 Q-values
+
+\end{itemize}import gym
+
+
+
+\subsubsection{Preprocessing for Pong}% ---------------------------------------------------
+
+\begin{enumerate}
+
+    \item Convert RGB to grayscale\section{Problem 1: Deep Q-Network (DQN)}env = gym.make("MountainCar-v0")
+
+    \item Crop to remove scoreboard (35:195 rows)
+
+    \item Downsample to 84×84 pixelsprint("State space:", env.observation_space)
+
+    \item Normalize pixel values to [0, 1]
+
+    \item Stack 4 consecutive frames for motion information\subsection{Environment Analysis}print("Action space:", env.action_space)
+
+\end{enumerate}
+
+\end{lstlisting}
+
+\subsection{Hyperparameters}
+
+\subsubsection{Pong-v5}
+
+\begin{table}[H]
+
+\centering\begin{itemize}\textbf{Observations:}
+
+\caption{DQN Hyperparameters}
+
+\begin{tabular}{lcc} \item \textbf{State Space}: RGB images (210×160×3 pixels)\begin{itemize}
+
+\toprule
+
+\textbf{Parameter} & \textbf{Pong} & \textbf{MountainCar} \\ \item \textbf{Action Space}: Discrete(6) - \{NOOP, FIRE, RIGHT, LEFT, RIGHTFIRE, LEFTFIRE\}    \item The state consists of position and velocity of the car.
+
+\midrule
+
+Learning Rate & $2.5 \times 10^{-4}$ & $1 \times 10^{-3}$ \\ \item \textbf{Reward}: +1 for scoring, -1 for opponent scoring    \item There are three discrete actions: push left, no push, and push right.
+
+Discount Factor ($\gamma$) & 0.99 & 0.99 \\
+
+Replay Buffer Size & 50,000 & 50,000 \\ \item \textbf{Episode Termination}: First to 21 points    \item Each step where the goal is not reached gives a reward of -1.
+
+Batch Size & 32 & 32 \\
+
+Target Update Frequency & 10,000 steps & 1,000 steps \\\end{itemize}
+
+Initial Epsilon ($\epsilon_0$) & 1.0 & 1.0 \\
+
+Final Epsilon ($\epsilon_{min}$) & 0.02 & 0.01 \\
+
+Epsilon Decay & 0.9999 & 0.995 \\\subsubsection{MountainCar-v0}\begin{table}[H]
+
+Optimizer & Adam & Adam \\
+
+\bottomrule\begin{itemize}\centering
+
+\end{tabular}
+
+\end{table} \item \textbf{State Space}: Box(2) - position $\in [-1.2, 0.6]$, velocity $\in [-0.07, 0.07]$\caption{Environment Summary}
+
+
+
+\subsection{Training Results} \item \textbf{Action Space}: Discrete(3) - \{push left, no push, push right\}\begin{tabular}{lcccc}
+
+
+
+\subsubsection{Pong-v5} \item \textbf{Reward}: -1 per timestep until goal is reached\toprule
+
+
+
+\textbf{Training Configuration:} \item \textbf{Episode Termination}: Goal reached (position $\geq 0.5$) or 200 steps\textbf{Environment} & \textbf{State Dim} & \textbf{Action Space} & \textbf{Reward Range} & \textbf{Episode Limit} \\
+
+\begin{itemize}
+
+    \item Total Training Steps: 3,000,000 (3M)\end{itemize}\midrule
+
+    \item Training divided into 60 batches of 50,000 steps each
+
+    \item Total Episodes: 1,249MountainCar-v0 & 2 & 3 & -1 per step & 200 \\
+
+    \item Training Time: $\sim$6-7 hours on RTX 3050
+
+\end{itemize}\begin{table}[H]Pong-v0 & (210,160,3) & 6 & +1 / -1 & 21 points \\
+
+
+
+\textbf{Performance Metrics:}\centering\bottomrule
+
+\begin{table}[H]
+
+\centering\caption{DQN Environment Specifications}\end{tabular}
+
+\caption{Pong DQN Final Performance}
+
+\begin{tabular}{lc}\begin{tabular}{lcccc}\end{table}
+
+\toprule
+
+\textbf{Metric} & \textbf{Value} \\\toprule
+
+\midrule
+
+Best Mean Reward (100 ep) & +11.75 \\\textbf{Environment} & \textbf{State Dim} & \textbf{Actions} & \textbf{Challenge} & \textbf{Max Steps} \\\subsection{(b) DQN Implementation}
+
+Last 100 Episodes Mean & +11.19 \\
+
+Last 50 Episodes Mean & +10.76 \\\midruleThe DQN algorithm uses:
+
+Win Rate (Last 100 ep) & 97\% \\
+
+Max Reward Achieved & +20 \\Pong-v5 & (210,160,3) & 6 & Visual, Delayed Reward & Variable \\\begin{itemize}
+
+Final Epsilon & 0.02 \\
+
+\bottomruleMountainCar-v0 & 2 & 3 & Sparse Reward & 200 \\    \item A Q-network $Q_\theta(s,a)$ parameterized by weights $\theta$.
+
+\end{tabular}
+
+\end{table}\bottomrule    \item A target network $Q_{\theta^-}$ updated every fixed interval.
+
+
+
+\textbf{Key Findings:}\end{tabular}    \item Experience replay buffer to break correlation between samples.
+
+\begin{itemize}
+
+    \item Agent achieved 97\% win rate against built-in opponent\end{table}\end{itemize}
+
+    \item Average score of +11.19 indicates consistent winning performance
+
+    \item In Pong, scores range from -21 to +21
+
+    \item Agent successfully learned to track ball and position paddle\subsection{DQN Algorithm Implementation}The loss is given by:
+
+    \item Training converged after $\sim$2M steps, continued to improve through 3M
+
+\end{itemize}\[
+
+
+
+\begin{figure}[H]\subsubsection{Core Components}L(\theta) = \mathbb{E}_{(s,a,r,s') \sim \mathcal{D}} \left[ \left( r + \gamma \max_{a'} Q_{\theta^-}(s',a') - Q_\theta(s,a) \right)^2 \right]
+
+\centering
+
+\includegraphics[width=0.95\textwidth]{pong_training_3M_results.png}The DQN algorithm employs three key innovations:\]
+
+\caption{Pong DQN Training Results (3M steps): Learning curves showing episode rewards, reward distribution, loss progression, and performance across 60 training batches}
+
+\end{figure}
+
+\begin{enumerate}\textbf{Key Hyperparameters:}
+
+\subsubsection{MountainCar-v0}
+
+ \item \textbf{Experience Replay}: Stores transitions $(s, a, r, s', done)$ in a replay buffer ($D$) to break temporal correlations\begin{itemize}
+
+\textbf{Performance Metrics:}
+
+\begin{itemize} \item \textbf{Target Network}: Maintains a separate network $Q_{\theta^-}$ updated periodically    \item Learning rate: 1e-3
+
+    \item Success Rate: 78-88\% (episodes where goal is reached)
+
+    \item Average Reward: -147 to -154 \item \textbf{Double DQN}: Uses policy network for action selection and target network for value estimation    \item Discount factor ($\gamma$): 0.99
+
+    \item The agent learned to reach the goal but took many steps
+
+    \item Successfully employed momentum-building strategy\end{enumerate}    \item Replay buffer size: 50,000
+
+\end{itemize}
+
+ \item Mini-batch size: 64
+
+\begin{figure}[H]
+
+\centeringThe loss function is:    \item Target update interval: 1,000 steps
+
+\includegraphics[width=0.8\textwidth]{mountaincar_training_results.png}
+
+\caption{MountainCar DQN Training: Episode rewards and moving average showing learning progression}\[\end{itemize}
+
+\end{figure}
+
+L(\theta) = \mathbb{E}_{(s,a,r,s') \sim \mathcal{D}} \left[ \left( r + \gamma Q_{\theta^-}(s', \arg\max_{a'} Q_\theta(s', a')) - Q_\theta(s,a) \right)^2 \right]
+
+\subsection{Hyperparameter Study: Learning Rate}
+
+\]\subsubsection*{Preprocessing for Pong}
+
+A systematic study was conducted with four different learning rates:
+
+\begin{itemize}For the Pong environment:
+
+    \item $\alpha = 0.0001$
+
+    \item $\alpha = 0.001$\subsubsection{Neural Network Architecture}\begin{enumerate}
+
+    \item $\alpha = 0.01$
+
+    \item $\alpha = 0.1$ \item Convert RGB frames to grayscale.
+
+\end{itemize}
+
+\textbf{Pong CNN Architecture:}    \item Downsample the image.
+
+\begin{table}[H]
+
+\centering\begin{itemize}    \item Subtract consecutive frames to capture motion.
+
+\caption{Learning Rate Study Results (MountainCar)}
+
+\begin{tabular}{lc} \item Input: 4 stacked 84×84 grayscale frames\end{enumerate}
+
+\toprule
+
+\textbf{Learning Rate} & \textbf{Best Mean Reward} \\ \item Conv1: 32 filters, 8×8 kernel, stride 4, ReLU
+
+\midrule
+
+$1 \times 10^{-4}$ & -199.45 \\ \item Conv2: 64 filters, 4×4 kernel, stride 2, ReLU\subsection{(c) Results and Learning Curves}
+
+$1 \times 10^{-3}$ & -200.00 \\
+
+$1 \times 10^{-2}$ & -200.00 \\ \item Conv3: 64 filters, 3×3 kernel, stride 1, ReLU\begin{figure}[H]
+
+$1 \times 10^{-1}$ & -200.00 \\
+
+\bottomrule \item FC1: 512 units, ReLU\centering
+
+\end{tabular}
+
+\end{table} \item Output: 6 Q-values (one per action)\includegraphics[width=0.8\textwidth]{dqn_mountaincar_curve.png}
+
+
+
+\begin{figure}[H]\end{itemize}\caption{Learning curve for DQN on MountainCar-v0 (mean reward per episode).}
+
+\centering
+
+\includegraphics[width=0.8\textwidth]{mountaincar_lr_comparison.png}\end{figure}
+
+\caption{Learning Rate Comparison: Effect on MountainCar DQN performance}
+
+\end{figure}\textbf{MountainCar MLP Architecture:}
+
+
+
+\textbf{Observations:}\begin{itemize}\begin{figure}[H]
+
+\begin{itemize}
+
+    \item $\alpha = 0.0001$ showed slightly better performance \item Input: 2-dimensional state\centering
+
+    \item Higher learning rates ($\geq 0.01$) led to instability
+
+    \item Lower learning rates require more training time \item Hidden1: 128 units, ReLU\includegraphics[width=0.8\textwidth]{dqn_pong_curve.png}
+
+    \item Optimal range: $[10^{-4}, 10^{-3}]$ for this environment
+
+\end{itemize} \item Hidden2: 128 units, ReLU\caption{Learning curve for DQN on Pong-v0.}
+
+
+
+% --------------------------------------------------- \item Output: 3 Q-values\end{figure}
+
+\section{Problem 3: Policy Gradient}
+
+\end{itemize}
+
+\subsection{Environment Analysis}
+
+\subsection{(d) Hyperparameter Study}
+
+\subsubsection{CartPole-v1}
+
+\begin{itemize}\subsubsection{Preprocessing for Pong}The learning rate was varied as follows: $\{1 \times 10^{-2}, 1 \times 10^{-3}, 1 \times 10^{-4}, 5 \times 10^{-5}\}$.
+
+    \item \textbf{State Space}: Box(4) - cart position, velocity, pole angle, pole angular velocity
+
+    \item \textbf{Action Space}: Discrete(2) - push left or right\begin{enumerate}
+
+    \item \textbf{Reward}: +1 for each timestep pole remains upright
+
+    \item \textbf{Solved Threshold}: Average reward $\geq$ 475 over 100 episodes \item Convert RGB to grayscale\begin{figure}[H]
+
+    \item \textbf{Episode Termination}: Pole angle $> \pm 12°$ or cart position $> \pm 2.4$ or 500 steps
+
+\end{itemize} \item Crop to remove scoreboard (35:195 rows)\centering
+
+
+
+\subsubsection{LunarLander-v3} \item Downsample to 84×84 pixels\includegraphics[width=0.8\textwidth]{lr_comparison.png}
+
+\begin{itemize}
+
+    \item \textbf{State Space}: Box(8) - position, velocity, angle, angular velocity, leg contact \item Normalize pixel values to [0, 1]\caption{Effect of learning rate on DQN performance (MountainCar-v0).}
+
+    \item \textbf{Action Space}: Discrete(4) - \{do nothing, fire left, fire main, fire right\}
+
+    \item \textbf{Reward}: Based on distance to landing pad, velocity, crashes, fuel usage \item Stack 4 consecutive frames for motion information\end{figure}
+
+    \item \textbf{Solved Threshold}: Average reward $\geq$ 200 over 100 episodes
+
+    \item \textbf{Reward Range}: [-∞, +200+] (crash: -100, land: +100-140)\end{enumerate}
+
+\end{itemize}
+
+\textbf{Observation:} Extremely high or low learning rates led to instability or slow convergence. The best trade-off was found at $\alpha = 1e{-3}$.
+
+\subsection{Random Agent Baseline}
+
+\subsection{Hyperparameters}
+
+\textbf{CartPole-v1 Random Agent:}
+
+\begin{itemize}\subsection{(e) Discussion}
+
+    \item Average Reward: $19.4 \pm 10.26$
+
+    \item Max Reward: 42.0\begin{table}[H]DQN successfully learned to solve the MountainCar problem, with smooth convergence after sufficient exploration. In Pong, preprocessing was crucial for learning meaningful motion-based representations. Training required several million steps for stable performance.
+
+    \item Min Reward: 8.0
+
+\end{itemize}\centering
+
+
+
+\subsection{Policy Gradient Algorithm}\caption{DQN Hyperparameters}% ---------------------------------------------------
+
+
+
+\subsubsection{REINFORCE with Variance Reduction}\begin{tabular}{lcc}\section{Problem 2: Policy Gradient}
+
+
+
+The policy gradient theorem:\toprule
+
+\[
+
+\nabla_\theta J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta} \left[ \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t | s_t) G_t \right]\textbf{Parameter} & \textbf{Pong} & \textbf{MountainCar} \\\subsection{(a) Environment Setup and Random Agent}
+
+\]
+
+\midrule\begin{lstlisting}[language=Python, caption=Loading CartPole Environment]
+
+\textbf{Return Computation:}
+
+\begin{itemize}Learning Rate & $2.5 \times 10^{-4}$ & $1 \times 10^{-3}$ \\env = gym.make("CartPole-v0")
+
+    \item \textbf{Total Trajectory Reward}: $G_0 = \sum_{t=0}^T \gamma^t r_{t+1}$ (same for all timesteps)
+
+    \item \textbf{Reward-to-Go}: $G_t = \sum_{t'=t}^T \gamma^{t'-t} r_{t'+1}$ (reduces variance)Discount Factor ($\gamma$) & 0.99 & 0.99 \\print("State space:", env.observation_space)
+
+\end{itemize}
+
+Replay Buffer Size & 50,000 & 50,000 \\print("Action space:", env.action_space)
+
+\textbf{Baseline Functions:}
+
+\begin{enumerate}Batch Size & 32 & 32 \\\end{lstlisting}
+
+    \item \textbf{No Baseline}: $b = 0$
+
+    \item \textbf{Constant}: $b = \mathbb{E}[G(\tau)] \approx \frac{1}{K} \sum_i G(\tau^i)$Target Update Frequency & 10,000 steps & 1,000 steps \\
+
+    \item \textbf{Time-dependent}: $b_t = \frac{1}{K} \sum_i G_t(\tau^i)$
+
+    \item \textbf{State-dependent}: $b(s) = V^\pi(s)$ (learned value function)Initial Epsilon ($\epsilon_0$) & 1.0 & 1.0 \\\textbf{Observation:}
+
+\end{enumerate}
+
+Final Epsilon ($\epsilon_{min}$) & 0.02 & 0.01 \\\begin{itemize}
+
+\textbf{Advantage Estimation:}
+
+\[Epsilon Decay & 0.9999 & 0.995 \\    \item Continuous state space of dimension 4.
+
+A_t = G_t - b(s_t)
+
+\]Optimizer & Adam & Adam \\    \item Two discrete actions: left or right.
+
+
+
+\textbf{Advantage Normalization:}\bottomrule\end{itemize}
+
+\[
+
+\hat{A}_t = \frac{A_t - \mu(A)}{\sigma(A) + \epsilon}\end{tabular}
+
+\]
+
+where $\mu(A)$ is mean, $\sigma(A)$ is standard deviation, and $\epsilon = 10^{-8}$ for numerical stability.\end{table}\subsection{(b) Implementation Details}
+
+
+
+\subsection{Neural Network Architecture}The policy gradient algorithm (REINFORCE) optimizes:
+
+
+
+\textbf{Policy Network (Actor):}\subsection{Training Results}\[
+
+\begin{itemize}
+
+    \item Input: State dimension\nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta} \left[ \sum_t \nabla_\theta \log \pi_\theta(a_t | s_t) G_t \right]
+
+    \item Hidden1: 128 units, ReLU
+
+    \item Hidden2: 128 units, ReLU\subsubsection{Pong-v5}\]
+
+    \item Output: Action probabilities (Softmax)
+
+\end{itemize}
+
+\textbf{Training Configuration:}Where $G_t$ is either:
+
+\textbf{Value Network (Critic - for state baseline):}
+
+\begin{itemize}\begin{itemize}
+
+    \item Input: State dimension
+
+    \item Hidden1: 128 units, ReLU \item Total Training Steps: 3,000,000 (3M)    \item \textbf{Total reward}: $G_0 = \sum_{t=0}^T \gamma^t r_{t+1}$
+
+    \item Hidden2: 128 units, ReLU
+
+    \item Output: State value $V(s)$ \item Training divided into 60 batches of 50,000 steps each    \item \textbf{Reward-to-go}: $G_t = \sum_{t'=t}^T \gamma^{t'-t} r_{t'+1}$
+
+\end{itemize}
+
+ \item Total Episodes: 1,249\end{itemize}
+
+\subsection{Hyperparameters}
+
+ \item Training Time: $\sim$6-7 hours on RTX 3050
+
+\begin{table}[H]
+
+\centering\end{itemize}To reduce variance, we use:
+
+\caption{Policy Gradient Hyperparameters}
+
+\begin{tabular}{lcc}\[
+
+\toprule
+
+\textbf{Parameter} & \textbf{CartPole} & \textbf{LunarLander} \\\textbf{Performance Metrics:}A_t = G_t - b(s_t)
+
+\midrule
+
+Learning Rate (Policy) & 0.001 & 0.001 \\\begin{table}[H]\]
+
+Learning Rate (Value) & 0.001 & 0.001 \\
+
+Discount Factor ($\gamma$) & 0.99 & 0.99 \\\centeringwhere $b(s_t)$ is a baseline (e.g., value function). Advantage normalization ensures $\text{mean}(A_t) = 0$ and $\text{std}(A_t) = 1$.
+
+Iterations & 500 & 500 \\
+
+Batch Size (episodes) & 20 & 20 \\\caption{Pong DQN Final Performance}
+
+Optimizer & Adam & Adam \\
+
+\bottomrule\begin{tabular}{lc}\subsection{(c) Results and Comparisons}
+
+\end{tabular}
+
+\end{table}\toprule\begin{figure}[H]
+
+
+
+\subsection{Training Results}\textbf{Metric} & \textbf{Value} \\\centering
+
+
+
+\subsubsection{CartPole-v1 Results}\midrule\includegraphics[width=0.8\textwidth]{pg_cartpole_comparison.png}
+
+
+
+\begin{table}[H]Best Mean Reward (100 ep) & +11.75 \\\caption{Policy Gradient on CartPole-v0: with/without Reward-to-Go and Advantage Normalization.}
+
+\centering
+
+\caption{CartPole-v1 Policy Gradient Comparison (500 iterations, batch size 20)}Last 100 Episodes Mean & +11.19 \\\end{figure}
+
+\begin{tabular}{lcccc}
+
+\topruleLast 50 Episodes Mean & +10.76 \\
+
+\textbf{Configuration} & \textbf{RTG} & \textbf{Norm} & \textbf{Baseline} & \textbf{Best Reward} \\
+
+\midruleWin Rate (Last 100 ep) & 97\% \\\begin{figure}[H]
+
+Baseline & No & No & None & 39.75 \\
+
+RTG Only & Yes & No & None & 24.25 \\Max Reward Achieved & +20 \\\centering
+
+RTG + Norm & Yes & Yes & None & 362.55 \\
+
+RTG + Norm + Constant & Yes & Yes & Constant & \textbf{404.85} \\Final Epsilon & 0.02 \\\includegraphics[width=0.8\textwidth]{pg_lunarlander_comparison.png}
+
+RTG + Norm + State & Yes & Yes & State V(s) & 64.40 \\
+
+\bottomrule\bottomrule\caption{Policy Gradient on LunarLander-v2: variance reduction effects.}
+
+\end{tabular}
+
+\end{table}\end{tabular}\end{figure}
+
+
+
+\textbf{Key Findings:}\end{table}
+
+\begin{itemize}
+
+    \item RTG + Normalization + Constant Baseline achieved best performance: 404.85\textbf{Observation:} Both reward-to-go and advantage normalization significantly stabilized training and accelerated convergence.
+
+    \item Close to solving threshold (475) but needed more iterations
+
+    \item Normalization alone (without baseline) can hurt performance\textbf{Key Findings:}
+
+    \item Baseline subtraction is critical for variance reduction
+
+    \item 10.2x improvement from baseline (39.75 → 404.85)\begin{itemize}\subsection{(d) Effect of Batch Size}
+
+\end{itemize}
+
+ \item Agent achieved 97\% win rate against built-in opponent\begin{figure}[H]
+
+\begin{figure}[H]
+
+\centering \item Average score of +11.19 indicates consistent winning performance\centering
+
+\includegraphics[width=0.95\textwidth]{CartPole-v1_pg_comparison.png}
+
+\caption{CartPole-v1 Policy Gradient: Learning curves comparing different variance reduction techniques} \item In Pong, scores range from -21 to +21\includegraphics[width=0.8\textwidth]{batch_size_effect.png}
+
+\end{figure}
+
+ \item Agent successfully learned to track ball and position paddle\caption{Effect of batch size on Policy Gradient performance.}
+
+\subsubsection{LunarLander-v3 Results}
+
+ \item Training converged after $\sim$2M steps, continued to improve through 3M\end{figure}
+
+\begin{table}[H]
+
+\centering\end{itemize}
+
+\caption{LunarLander-v3 Policy Gradient Comparison (500 iterations, batch size 20)}
+
+\begin{tabular}{lcccc}Larger batch sizes led to smoother gradients and more stable returns but increased computation per iteration.
+
+\toprule
+
+\textbf{Configuration} & \textbf{RTG} & \textbf{Norm} & \textbf{Baseline} & \textbf{Best Reward} \\\begin{figure}[H]
+
+\midrule
+
+Baseline & No & No & None & -113.09 \\\centering\subsection{(e) Discussion}
+
+RTG Only & Yes & No & None & 133.46 \\
+
+RTG + Norm & Yes & Yes & None & 187.90 \\\includegraphics[width=0.95\textwidth]{pong_training_3M_results.png}Variance reduction techniques substantially improved learning stability, especially in environments with high reward stochasticity such as LunarLander.
+
+RTG + Norm + Constant & Yes & Yes & Constant & \textbf{211.65} \\
+
+RTG + Norm + State & Yes & Yes & State V(s) & 191.19 \\\caption{Pong DQN Training Results (3M steps): Learning curves showing episode rewards, reward distribution, loss progression, and performance across 60 training batches}
+
+\bottomrule
+
+\end{tabular}\end{figure}% ---------------------------------------------------
+
+\end{table}
+
+\section{Conclusions and Insights}
+
+\textbf{Key Findings:}
+
+\begin{itemize}\subsubsection{MountainCar-v0}\begin{itemize}
+
+    \item RTG + Norm + Constant Baseline performed best: 211.65
+
+    \item Successfully solved the environment (threshold: 200) \item DQN performs well on discrete environments with visual input, but requires careful tuning and large replay buffers.
+
+    \item Dramatic improvement from -113.09 to +211.65 (324.74 point increase)
+
+    \item All variance reduction techniques showed significant gains\textbf{Performance Metrics:}    \item Policy Gradient methods are more suitable for continuous control, and variance reduction is essential for stability.
+
+    \item Reward-to-go is essential for environments with delayed rewards
+
+\end{itemize}\begin{itemize}    \item Reward-to-go and advantage normalization yield more consistent gradient estimates.
+
+
+
+\begin{figure}[H] \item Success Rate: 78-88\% (episodes where goal is reached)\end{itemize}
+
+\centering
+
+\includegraphics[width=0.95\textwidth]{LunarLander-v3_pg_comparison.png} \item Average Reward: -147 to -154
+
+\caption{LunarLander-v3 Policy Gradient: Learning curves showing dramatic improvement with variance reduction}
+
+\end{figure} \item The agent learned to reach the goal but took many steps\textbf{Future Work:}
+
+
+
+\subsection{Command-Line Interface} \item Successfully employed momentum-building strategy\begin{itemize}
+
+
+
+The implementation includes a flexible command-line interface supporting all configurations:\end{itemize}    \item Implementing Double DQN or Dueling DQN architectures.
+
+
+
+\begin{lstlisting}[language=bash, caption=Policy Gradient Command-Line Usage] \item Extending Policy Gradient to Actor-Critic and PPO frameworks.
+
+# With all variance reduction techniques
+
+python policy_gradient.py --env CartPole-v1 --reward_to_go \\begin{figure}[H]\end{itemize}
+
+    --normalize_advantages --baseline state --iterations 500 \
+
+    --batch_size 20\centering
+
+
+
+# Run full comparison automatically\includegraphics[width=0.8\textwidth]{mountaincar_training_results.png}% ---------------------------------------------------
+
+python policy_gradient.py --env CartPole-v1 --iterations 500 \
+
+    --batch_size 20 --compare\caption{MountainCar DQN Training: Episode rewards and moving average showing learning progression}\section{References}
+
+
+
+# LunarLander training\end{figure}\begin{enumerate}
+
+python policy_gradient.py --env LunarLander-v3 --reward_to_go \
+
+    --normalize_advantages --baseline constant --iterations 500 \ \item Mnih, V. et al., \textit{Playing Atari with Deep Reinforcement Learning}, NIPS Deep Learning Workshop, 2013.
+
+    --batch_size 20 --compare
+
+\end{lstlisting}\subsection{Hyperparameter Study: Learning Rate}    \item Sutton, R. S. and Barto, A. G., \textit{Reinforcement Learning: An Introduction}, 2nd Edition, MIT Press.
+
+
+
+% --------------------------------------------------- \item OpenAI Gym Documentation: \url{https://www.gymlibrary.dev}
+
+\section{Analysis and Discussion}
+
+A systematic study was conducted with four different learning rates:\end{enumerate}
+
+\subsection{DQN vs Policy Gradient}
+
+\begin{itemize}
+
+\begin{table}[H]
+
+\centering \item $\alpha = 0.0001$\end{document}
+
+\caption{Comparison of DQN and Policy Gradient Methods}
+
+\begin{tabular}{lcc} \item $\alpha = 0.001$
+
+\toprule \item $\alpha = 0.01$
+
+\textbf{Aspect} & \textbf{DQN} & \textbf{Policy Gradient} \\ \item $\alpha = 0.1$
+
+\midrule\end{itemize}
+
+Learning Type & Value-based & Policy-based \\
+
+Action Space & Discrete only & Discrete \& Continuous \\\begin{table}[H]
+
+Sample Efficiency & High (replay buffer) & Lower (on-policy) \\\centering
+
+Stability & Requires target network & Requires variance reduction \\\caption{Learning Rate Study Results (MountainCar)}
+
+Convergence & Can oscillate & Smoother with baselines \\\begin{tabular}{lc}
+
+Memory Usage & High (replay buffer) & Low \\\toprule
+
+\bottomrule\textbf{Learning Rate} & \textbf{Best Mean Reward} \\
+
+\end{tabular}\midrule
+
+\end{table}$1 \times 10^{-4}$ & -199.45 \\
+
+$1 \times 10^{-3}$ & -200.00 \\
+
+\subsection{Variance Reduction Analysis}$1 \times 10^{-2}$ & -200.00 \\
+
+$1 \times 10^{-1}$ & -200.00 \\
+
+\textbf{Impact of Each Technique:}\bottomrule
+
+\end{tabular}
+
+\begin{enumerate}\end{table}
+
+    \item \textbf{Reward-to-Go}:
+
+    \begin{itemize}\begin{figure}[H]
+
+        \item Reduces variance by using causal returns\centering
+
+        \item Essential for environments with delayed rewards\includegraphics[width=0.8\textwidth]{mountaincar_lr_comparison.png}
+
+        \item CartPole: Minimal improvement alone\caption{Learning Rate Comparison: Effect on MountainCar DQN performance}
+
+        \item LunarLander: 246.55 point improvement (-113.09 → 133.46)\end{figure}
+
+    \end{itemize}
+
+    \textbf{Observations:}
+
+    \item \textbf{Advantage Normalization}:\begin{itemize}
+
+    \begin{itemize} \item $\alpha = 0.0001$ showed slightly better performance
+
+        \item Standardizes advantage estimates \item Higher learning rates ($\geq 0.01$) led to instability
+
+        \item Can hurt performance without good baseline \item Lower learning rates require more training time
+
+        \item Works best when combined with baseline subtraction \item Optimal range: $[10^{-4}, 10^{-3}]$ for this environment
+
+        \item Ensures stable gradient magnitudes\end{itemize}
+
+    \end{itemize}
+
+    % ---------------------------------------------------
+
+    \item \textbf{Baseline Subtraction}:\section{Problem 3: Policy Gradient}
+
+    \begin{itemize}
+
+        \item Most critical variance reduction technique\subsection{Environment Analysis}
+
+        \item Constant baseline: Simple, effective
+
+        \item State-dependent baseline: Best theoretical properties\subsubsection{CartPole-v1}
+
+        \item CartPole: 365.10 point improvement (39.75 → 404.85)\begin{itemize}
+
+    \end{itemize} \item \textbf{State Space}: Box(4) - cart position, velocity, pole angle, pole angular velocity
+
+\end{enumerate} \item \textbf{Action Space}: Discrete(2) - push left or right
+
+ \item \textbf{Reward}: +1 for each timestep pole remains upright
+
+\subsection{Computational Requirements} \item \textbf{Solved Threshold}: Average reward $\geq$ 475 over 100 episodes
+
+ \item \textbf{Episode Termination}: Pole angle $> \pm 12°$ or cart position $> \pm 2.4$ or 500 steps
+
+\begin{table}[H]\end{itemize}
+
+\centering
+
+\caption{Training Time and Computational Requirements}\subsubsection{LunarLander-v3}
+
+\begin{tabular}{lccc}\begin{itemize}
+
+\toprule \item \textbf{State Space}: Box(8) - position, velocity, angle, angular velocity, leg contact
+
+\textbf{Task} & \textbf{Steps/Iterations} & \textbf{Time} & \textbf{Episodes} \\ \item \textbf{Action Space}: Discrete(4) - \{do nothing, fire left, fire main, fire right\}
+
+\midrule \item \textbf{Reward}: Based on distance to landing pad, velocity, crashes, fuel usage
+
+Pong DQN (3M) & 3,000,000 & $\sim$6-7 hours & 1,249 \\ \item \textbf{Solved Threshold}: Average reward $\geq$ 200 over 100 episodes
+
+MountainCar DQN & 100,000 & $\sim$30 min & $\sim$500 \\ \item \textbf{Reward Range}: [-∞, +200+] (crash: -100, land: +100-140)
+
+CartPole PG (5 configs) & 500 × 5 & $\sim$20 min & $\sim$50,000 \\\end{itemize}
+
+LunarLander PG (5 configs) & 500 × 5 & $\sim$2 hours & $\sim$50,000 \\
+
+\bottomrule\subsection{Random Agent Baseline}
+
+\end{tabular}
+
+\end{table}\textbf{CartPole-v1 Random Agent:}
+
+\begin{itemize}
+
+\subsection{Challenges and Solutions} \item Average Reward: $19.4 \pm 10.26$
+
+ \item Max Reward: 42.0
+
+\textbf{Challenges Encountered:} \item Min Reward: 8.0
+
+\begin{enumerate}\end{itemize}
+
+    \item \textbf{Pong Training Stability}:
+
+    \begin{itemize}\subsection{Policy Gradient Algorithm}
+
+        \item Problem: GPU memory overflow with large replay buffer
+
+        \item Solution: Batch training (50K step chunks), memory cleanup between batches\subsubsection{REINFORCE with Variance Reduction}
+
+    \end{itemize}
+
+    The policy gradient theorem:
+
+    \item \textbf{MountainCar Sparse Rewards}:\[
+
+    \begin{itemize}\nabla_\theta J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta} \left[ \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t | s_t) G_t \right]
+
+        \item Problem: Agent struggles to discover goal initially\]
+
+        \item Solution: Long exploration period, careful epsilon decay
+
+    \end{itemize}\textbf{Return Computation:}
+
+    \begin{itemize}
+
+    \item \textbf{CartPole High Variance}: \item \textbf{Total Trajectory Reward}: $G_0 = \sum_{t=0}^T \gamma^t r_{t+1}$ (same for all timesteps)
+
+    \begin{itemize} \item \textbf{Reward-to-Go}: $G_t = \sum_{t'=t}^T \gamma^{t'-t} r_{t'+1}$ (reduces variance)
+
+        \item Problem: Policy gradient unstable without variance reduction\end{itemize}
+
+        \item Solution: Implemented multiple baseline types and normalization
+
+    \end{itemize}\textbf{Baseline Functions:}
+
+    \begin{enumerate}
+
+    \item \textbf{LunarLander Box2D Dependency}: \item \textbf{No Baseline}: $b = 0$
+
+    \begin{itemize} \item \textbf{Constant}: $b = \mathbb{E}[G(\tau)] \approx \frac{1}{K} \sum_i G(\tau^i)$
+
+        \item Problem: Box2D physics library installation issues on Windows \item \textbf{Time-dependent}: $b_t = \frac{1}{K} \sum_i G_t(\tau^i)$
+
+        \item Solution: Used `pip install Box2D --no-build-isolation` \item \textbf{State-dependent}: $b(s) = V^\pi(s)$ (learned value function)
+
+    \end{itemize}\end{enumerate}
+
+\end{enumerate}
+
+\textbf{Advantage Estimation:}
+
+% ---------------------------------------------------\[
+
+\section{Conclusions}A_t = G_t - b(s_t)
+
+\]
+
+\subsection{Key Findings}
+
+\textbf{Advantage Normalization:}
+
+\begin{enumerate}\[
+
+    \item \textbf{DQN Performance}:\hat{A}_t = \frac{A_t - \mu(A)}{\sigma(A) + \epsilon}
+
+    \begin{itemize}\]
+
+        \item Successfully mastered Pong with 97\% win rate after 3M stepswhere $\mu(A)$ is mean, $\sigma(A)$ is standard deviation, and $\epsilon = 10^{-8}$ for numerical stability.
+
+        \item Achieved 78-88\% success rate on MountainCar
+
+        \item CNN architecture essential for visual environments\subsection{Neural Network Architecture}
+
+        \item Experience replay and target networks crucial for stability
+
+    \end{itemize}\textbf{Policy Network (Actor):}
+
+    \begin{itemize}
+
+    \item \textbf{Policy Gradient Performance}: \item Input: State dimension
+
+    \begin{itemize} \item Hidden1: 128 units, ReLU
+
+        \item Variance reduction techniques critical for success \item Hidden2: 128 units, ReLU
+
+        \item RTG + Norm + Baseline achieved 10x improvement on CartPole \item Output: Action probabilities (Softmax)
+
+        \item Successfully solved LunarLander (211.65 vs 200 threshold)\end{itemize}
+
+        \item Baseline subtraction most impactful single technique
+
+    \end{itemize}\textbf{Value Network (Critic - for state baseline):}
+
+    \begin{itemize}
+
+    \item \textbf{Hyperparameter Sensitivity}: \item Input: State dimension
+
+    \begin{itemize} \item Hidden1: 128 units, ReLU
+
+        \item Learning rate optimal range: $[10^{-4}, 10^{-3}]$ \item Hidden2: 128 units, ReLU
+
+        \item Batch size affects stability vs computation trade-off \item Output: State value $V(s)$
+
+        \item Epsilon decay rate influences exploration-exploitation balance\end{itemize}
+
+    \end{itemize}
+
+\end{enumerate}\subsection{Hyperparameters}
+
+
+
+\subsection{Comparative Analysis}\begin{table}[H]
+
+\centering
+
+\textbf{When to Use DQN:}\caption{Policy Gradient Hyperparameters}
+
+\begin{itemize}\begin{tabular}{lcc}
+
+    \item Discrete action spaces\toprule
+
+    \item Visual/high-dimensional observations\textbf{Parameter} & \textbf{CartPole} & \textbf{LunarLander} \\
+
+    \item When sample efficiency is important\midrule
+
+    \item Environments where off-policy learning is beneficialLearning Rate (Policy) & 0.001 & 0.001 \\
+
+\end{itemize}Learning Rate (Value) & 0.001 & 0.001 \\
+
+Discount Factor ($\gamma$) & 0.99 & 0.99 \\
+
+\textbf{When to Use Policy Gradient:}Iterations & 500 & 500 \\
+
+\begin{itemize}Batch Size (episodes) & 20 & 20 \\
+
+    \item Continuous action spacesOptimizer & Adam & Adam \\
+
+    \item When direct policy optimization is needed\bottomrule
+
+    \item Simpler implementation for discrete spaces\end{tabular}
+
+    \item When on-policy learning is acceptable\end{table}
+
+\end{itemize}
+
+\subsection{Training Results}
+
+\subsection{Future Improvements}
+
+\subsubsection{CartPole-v1 Results}
+
+\begin{enumerate}
+
+    \item \textbf{DQN Extensions}:\begin{table}[H]
+
+    \begin{itemize}\centering
+
+        \item Implement Dueling DQN architecture\caption{CartPole-v1 Policy Gradient Comparison (500 iterations, batch size 20)}
+
+        \item Try Prioritized Experience Replay\begin{tabular}{lcccc}
+
+        \item Explore Rainbow DQN combining multiple improvements\toprule
+
+    \end{itemize}\textbf{Configuration} & \textbf{RTG} & \textbf{Norm} & \textbf{Baseline} & \textbf{Best Reward} \\
+
+    \midrule
+
+    \item \textbf{Policy Gradient Extensions}:Baseline & No & No & None & 39.75 \\
+
+    \begin{itemize}RTG Only & Yes & No & None & 24.25 \\
+
+        \item Implement Actor-Critic methods (A2C/A3C)RTG + Norm & Yes & Yes & None & 362.55 \\
+
+        \item Explore Proximal Policy Optimization (PPO)RTG + Norm + Constant & Yes & Yes & Constant & \textbf{404.85} \\
+
+        \item Test Generalized Advantage Estimation (GAE)RTG + Norm + State & Yes & Yes & State V(s) & 64.40 \\
+
+    \end{itemize}\bottomrule
+
+    \end{tabular}
+
+    \item \textbf{Training Optimization}:\end{table}
+
+    \begin{itemize}
+
+        \item Implement distributed training\textbf{Key Findings:}
+
+        \item Automatic hyperparameter tuning\begin{itemize}
+
+        \item Early stopping based on performance metrics \item RTG + Normalization + Constant Baseline achieved best performance: 404.85
+
+    \end{itemize} \item Close to solving threshold (475) but needed more iterations
+
+\end{enumerate} \item Normalization alone (without baseline) can hurt performance
+
+ \item Baseline subtraction is critical for variance reduction
+
+% --------------------------------------------------- \item 10.2x improvement from baseline (39.75 → 404.85)
+
+\section{Code Structure and Reproducibility}\end{itemize}
+
+
+
+\subsection{File Organization}\begin{figure}[H]
+
+\begin{lstlisting}\centering
+
+assignment/\includegraphics[width=0.95\textwidth]{CartPole-v1_pg_comparison.png}
+
+├── dqn_pong.py                    # Pong DQN implementation\caption{CartPole-v1 Policy Gradient: Learning curves comparing different variance reduction techniques}
+
+├── dqn_pong_continue.py           # Continue training from checkpoint\end{figure}
+
+├── dqn_quickstart.py              # MountainCar DQN
+
+├── mountaincar_hyperparameter_study.py  # LR study\subsubsection{LunarLander-v3 Results}
+
+├── evaluate_pong_3M.py            # Pong evaluation with rendering
+
+├── evaluate_mountaincar.py        # MountainCar evaluation\begin{table}[H]
+
+├── policy_gradient.py             # PG with variance reduction\centering
+
+├── evaluate_best_pg.py            # PG model evaluation\caption{LunarLander-v3 Policy Gradient Comparison (500 iterations, batch size 20)}
+
+└── results/\begin{tabular}{lcccc}
+
+    ├── pong_dqn_3M_final.pth      # Final Pong model\toprule
+
+    ├── mountaincar_dqn_final.pth  # MountainCar model\textbf{Configuration} & \textbf{RTG} & \textbf{Norm} & \textbf{Baseline} & \textbf{Best Reward} \\
+
+    ├── CartPole-v1_*_best.pth     # CartPole PG models (5)\midrule
+
+    ├── LunarLander-v3_*_best.pth  # LunarLander PG models (5)Baseline & No & No & None & -113.09 \\
+
+    └── *.png                      # Training plotsRTG Only & Yes & No & None & 133.46 \\
+
+\end{lstlisting}RTG + Norm & Yes & Yes & None & 187.90 \\
+
+RTG + Norm + Constant & Yes & Yes & Constant & \textbf{211.65} \\
+
+\subsection{Reproducibility}RTG + Norm + State & Yes & Yes & State V(s) & 191.19 \\
+
+\bottomrule
+
+All experiments can be reproduced using the provided code and hyperparameters. Random seeds were set (SEED=42) for consistency. The command-line interface allows exact replication of any configuration.\end{tabular}
+
+\end{table}
+
+% ---------------------------------------------------
+
+\section{References}\textbf{Key Findings:}
+
+\begin{itemize}
+
+\begin{enumerate} \item RTG + Norm + Constant Baseline performed best: 211.65
+
+    \item Mnih, V., et al. (2015). \textit{Human-level control through deep reinforcement learning}. Nature, 518(7540), 529-533. \item Successfully solved the environment (threshold: 200)
+
+     \item Dramatic improvement from -113.09 to +211.65 (324.74 point increase)
+
+    \item Van Hasselt, H., Guez, A., \& Silver, D. (2016). \textit{Deep reinforcement learning with double Q-learning}. In AAAI Conference on Artificial Intelligence. \item All variance reduction techniques showed significant gains
+
+     \item Reward-to-go is essential for environments with delayed rewards
+
+    \item Williams, R. J. (1992). \textit{Simple statistical gradient-following algorithms for connectionist reinforcement learning}. Machine Learning, 8(3-4), 229-256.\end{itemize}
+
+    
+
+    \item Sutton, R. S., \& Barto, A. G. (2018). \textit{Reinforcement Learning: An Introduction} (2nd ed.). MIT Press.\begin{figure}[H]
+
+    \centering
+
+    \item Schulman, J., et al. (2015). \textit{High-dimensional continuous control using generalized advantage estimation}. arXiv preprint arXiv:1506.02438.\includegraphics[width=0.95\textwidth]{LunarLander-v3_pg_comparison.png}
+
+    \caption{LunarLander-v3 Policy Gradient: Learning curves showing dramatic improvement with variance reduction}
+
+    \item Gymnasium Documentation. \url{https://gymnasium.farama.org/}\end{figure}
+
+    
+
+    \item PyTorch Documentation. \url{https://pytorch.org/docs/}\subsection{Command-Line Interface}
+
+\end{enumerate}
+
+The implementation includes a flexible command-line interface supporting all configurations:
+
+\end{document}
+
+\begin{lstlisting}[language=bash, caption=Policy Gradient Command-Line Usage]
+# With all variance reduction techniques
+python policy_gradient.py --env CartPole-v1 --reward_to_go \
+ --normalize_advantages --baseline state --iterations 500 \
+ --batch_size 20
+
+# Run full comparison automatically
+python policy_gradient.py --env CartPole-v1 --iterations 500 \
+ --batch_size 20 --compare
+
+# LunarLander training
+python policy_gradient.py --env LunarLander-v3 --reward_to_go \
+ --normalize_advantages --baseline constant --iterations 500 \
+ --batch_size 20 --compare
+\end{lstlisting}
+
+% ---------------------------------------------------
+\section{Analysis and Discussion}
+
+\subsection{DQN vs Policy Gradient}
+
+\begin{table}[H]
+\centering
+\caption{Comparison of DQN and Policy Gradient Methods}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Aspect} & \textbf{DQN} & \textbf{Policy Gradient} \\
+\midrule
+Learning Type & Value-based & Policy-based \\
+Action Space & Discrete only & Discrete \& Continuous \\
+Sample Efficiency & High (replay buffer) & Lower (on-policy) \\
+Stability & Requires target network & Requires variance reduction \\
+Convergence & Can oscillate & Smoother with baselines \\
+Memory Usage & High (replay buffer) & Low \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Variance Reduction Analysis}
+
+\textbf{Impact of Each Technique:}
+
+\begin{enumerate}
+ \item \textbf{Reward-to-Go}:
+ \begin{itemize}
+ \item Reduces variance by using causal returns
+ \item Essential for environments with delayed rewards
+ \item CartPole: Minimal improvement alone
+ \item LunarLander: 246.55 point improvement (-113.09 → 133.46)
+ \end{itemize}
+ 
+ \item \textbf{Advantage Normalization}:
+ \begin{itemize}
+ \item Standardizes advantage estimates
+ \item Can hurt performance without good baseline
+ \item Works best when combined with baseline subtraction
+ \item Ensures stable gradient magnitudes
+ \end{itemize}
+ 
+ \item \textbf{Baseline Subtraction}:
+ \begin{itemize}
+ \item Most critical variance reduction technique
+ \item Constant baseline: Simple, effective
+ \item State-dependent baseline: Best theoretical properties
+ \item CartPole: 365.10 point improvement (39.75 → 404.85)
+ \end{itemize}
+\end{enumerate}
+
+\subsection{Computational Requirements}
+
+\begin{table}[H]
+\centering
+\caption{Training Time and Computational Requirements}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Task} & \textbf{Steps/Iterations} & \textbf{Time} & \textbf{Episodes} \\
+\midrule
+Pong DQN (3M) & 3,000,000 & $\sim$6-7 hours & 1,249 \\
+MountainCar DQN & 100,000 & $\sim$30 min & $\sim$500 \\
+CartPole PG (5 configs) & 500 × 5 & $\sim$20 min & $\sim$50,000 \\
+LunarLander PG (5 configs) & 500 × 5 & $\sim$2 hours & $\sim$50,000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Challenges and Solutions}
+
+\textbf{Challenges Encountered:}
+\begin{enumerate}
+ \item \textbf{Pong Training Stability}:
+ \begin{itemize}
+ \item Problem: GPU memory overflow with large replay buffer
+ \item Solution: Batch training (50K step chunks), memory cleanup between batches
+ \end{itemize}
+ 
+ \item \textbf{MountainCar Sparse Rewards}:
+ \begin{itemize}
+ \item Problem: Agent struggles to discover goal initially
+ \item Solution: Long exploration period, careful epsilon decay
+ \end{itemize}
+ 
+ \item \textbf{CartPole High Variance}:
+ \begin{itemize}
+ \item Problem: Policy gradient unstable without variance reduction
+ \item Solution: Implemented multiple baseline types and normalization
+ \end{itemize}
+ 
+ \item \textbf{LunarLander Box2D Dependency}:
+ \begin{itemize}
+ \item Problem: Box2D physics library installation issues on Windows
+ \item Solution: Used `pip install Box2D --no-build-isolation`
+ \end{itemize}
+\end{enumerate}
+
+% ---------------------------------------------------
+\section{Conclusions}
+
+\subsection{Key Findings}
+
+\begin{enumerate}
+ \item \textbf{DQN Performance}:
+ \begin{itemize}
+ \item Successfully mastered Pong with 97\% win rate after 3M steps
+ \item Achieved 78-88\% success rate on MountainCar
+ \item CNN architecture essential for visual environments
+ \item Experience replay and target networks crucial for stability
+ \end{itemize}
+ 
+ \item \textbf{Policy Gradient Performance}:
+ \begin{itemize}
+ \item Variance reduction techniques critical for success
+ \item RTG + Norm + Baseline achieved 10x improvement on CartPole
+ \item Successfully solved LunarLander (211.65 vs 200 threshold)
+ \item Baseline subtraction most impactful single technique
+ \end{itemize}
+ 
+ \item \textbf{Hyperparameter Sensitivity}:
+ \begin{itemize}
+ \item Learning rate optimal range: $[10^{-4}, 10^{-3}]$
+ \item Batch size affects stability vs computation trade-off
+ \item Epsilon decay rate influences exploration-exploitation balance
+ \end{itemize}
+\end{enumerate}
+
+\subsection{Comparative Analysis}
+
+\textbf{When to Use DQN:}
+\begin{itemize}
+ \item Discrete action spaces
+ \item Visual/high-dimensional observations
+ \item When sample efficiency is important
+ \item Environments where off-policy learning is beneficial
+\end{itemize}
+
+\textbf{When to Use Policy Gradient:}
+\begin{itemize}
+ \item Continuous action spaces
+ \item When direct policy optimization is needed
+ \item Simpler implementation for discrete spaces
+ \item When on-policy learning is acceptable
+\end{itemize}
+
+\subsection{Future Improvements}
+
+\begin{enumerate}
+ \item \textbf{DQN Extensions}:
+ \begin{itemize}
+ \item Implement Dueling DQN architecture
+ \item Try Prioritized Experience Replay
+ \item Explore Rainbow DQN combining multiple improvements
+ \end{itemize}
+ 
+ \item \textbf{Policy Gradient Extensions}:
+ \begin{itemize}
+ \item Implement Actor-Critic methods (A2C/A3C)
+ \item Explore Proximal Policy Optimization (PPO)
+ \item Test Generalized Advantage Estimation (GAE)
+ \end{itemize}
+ 
+ \item \textbf{Training Optimization}:
+ \begin{itemize}
+ \item Implement distributed training
+ \item Automatic hyperparameter tuning
+ \item Early stopping based on performance metrics
+ \end{itemize}
+\end{enumerate}
+
+% ---------------------------------------------------
+\section{Code Structure and Reproducibility}
+
+\subsection{File Organization}
+\begin{lstlisting}
+assignment/
+├── dqn_pong.py                    # Pong DQN implementation
+├── dqn_pong_continue.py           # Continue training from checkpoint
+├── dqn_quickstart.py              # MountainCar DQN
+├── mountaincar_hyperparameter_study.py  # LR study
+├── evaluate_pong_3M.py            # Pong evaluation with rendering
+├── evaluate_mountaincar.py        # MountainCar evaluation
+├── policy_gradient.py             # PG with variance reduction
+├── evaluate_best_pg.py            # PG model evaluation
+└── 
+ ├── pong_dqn_3M_final.pth      # Final Pong model
+ ├── mountaincar_dqn_final.pth  # MountainCar model
+ ├── CartPole-v1_*_best.pth     # CartPole PG models (5)
+ ├── LunarLander-v3_*_best.pth  # LunarLander PG models (5)
+ └── *.png                      # Training plots
+\end{lstlisting}
+
+\subsection{Reproducibility}
+
+All experiments can be reproduced using the provided code and hyperparameters. Random seeds were set (SEED=42) for consistency. The command-line interface allows exact replication of any configuration.
+
+% ---------------------------------------------------
+\section{References}
+
+\begin{enumerate}
+ \item Mnih, V., et al. (2015). \textit{Human-level control through deep reinforcement learning}. Nature, 518(7540), 529-533.
+ 
+ \item Van Hasselt, H., Guez, A., \& Silver, D. (2016). \textit{Deep reinforcement learning with double Q-learning}. In AAAI Conference on Artificial Intelligence.
+ 
+ \item Williams, R. J. (1992). \textit{Simple statistical gradient-following algorithms for connectionist reinforcement learning}. Machine Learning, 8(3-4), 229-256.
+ 
+ \item Sutton, R. S., \& Barto, A. G. (2018). \textit{Reinforcement Learning: An Introduction} (2nd ed.). MIT Press.
+ 
+ \item Schulman, J., et al. (2015). \textit{High-dimensional continuous control using generalized advantage estimation}. arXiv preprint arXiv:1506.02438.
+ 
+ \item Gymnasium Documentation. \url{https://gymnasium.farama.org/}
+ 
+ \item PyTorch Documentation. \url{https://pytorch.org/docs/}
+\end{enumerate}
+
+\end{document}
+

@@ -4,7 +4,6 @@ venv/
 env/
 ENV/
 rlg/
-gymenv/
 gym-env/
 
 # Python cache
@@ -48,5 +47,3 @@ wheels/
 Thumbs.db
 
 # Project specific
-*.pdf
-*.zip

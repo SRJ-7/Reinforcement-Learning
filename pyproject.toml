@@ -1,0 +1,10 @@
+[project]
+name = "gym-env"
+version = "0.1.0"
+dependencies = [
+    "gym==0.21.0",
+    "numpy==1.23.5",
+    "gym[atari]",
+    "atari-py",
+    "autorom[accept-rom-license]",
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "batch_size": 5,
+    "best_avg_reward": 100.4,
+    "final_avg_reward": 73.2,
+    "solved_iteration": null,
+    "total_time": 31.01368761062622,
+    "avg_time_per_iteration": 0.3101368761062622,
+    "avg_return_std": 19.746352133869085,
+    "avg_advantage_variance": 500.027450282742,
+    "avg_loss": -0.0041042411098896996
+  },
+  {
+    "batch_size": 10,
+    "best_avg_reward": 49.0,
+    "final_avg_reward": 31.0,
+    "solved_iteration": null,
+    "total_time": 48.49141216278076,
+    "avg_time_per_iteration": 0.4849141216278076,
+    "avg_return_std": 13.308811459108663,
+    "avg_advantage_variance": 620.2297691657109,
+    "avg_loss": 0.0012271715179667808
+  },
+  {
+    "batch_size": 20,
+    "best_avg_reward": 35.4,
+    "final_avg_reward": 24.5,
+    "solved_iteration": null,
+    "total_time": 94.24284934997559,
+    "avg_time_per_iteration": 0.9424284934997559,
+    "avg_return_std": 12.754620405305836,
+    "avg_advantage_variance": 605.3696515184186,
+    "avg_loss": 0.000912683554670366
+  },
+  {
+    "batch_size": 50,
+    "best_avg_reward": 22.8,
+    "final_avg_reward": 16.52,
+    "solved_iteration": null,
+    "total_time": 189.7066774368286,
+    "avg_time_per_iteration": 1.897066774368286,
+    "avg_return_std": 7.708821155572982,
+    "avg_advantage_variance": 442.3008047543178,
+    "avg_loss": 0.0010962657789059449
+  },
+  {
+    "batch_size": 100,
+    "best_avg_reward": 28.01,
+    "final_avg_reward": 26.08,
+    "solved_iteration": null,
+    "total_time": 472.40946221351624,
+    "avg_time_per_iteration": 4.724094622135162,
+    "avg_return_std": 11.603334930450808,
+    "avg_advantage_variance": 204.0552451552184,
+    "avg_loss": 0.0005091801494563697
+  }
+]

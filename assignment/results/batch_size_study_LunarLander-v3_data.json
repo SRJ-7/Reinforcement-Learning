@@ -1,0 +1,57 @@
+[
+  {
+    "batch_size": 5,
+    "best_avg_reward": -69.22487311428819,
+    "final_avg_reward": -114.20517338571119,
+    "solved_iteration": null,
+    "total_time": 102.67319631576538,
+    "avg_time_per_iteration": 1.026731963157654,
+    "avg_return_std": 64.1219598412925,
+    "avg_advantage_variance": 2511.516273059436,
+    "avg_loss": -0.006083733885607217
+  },
+  {
+    "batch_size": 10,
+    "best_avg_reward": -26.909226658345904,
+    "final_avg_reward": -73.71115035981963,
+    "solved_iteration": null,
+    "total_time": 250.78695011138916,
+    "avg_time_per_iteration": 2.5078695011138916,
+    "avg_return_std": 72.59398822821298,
+    "avg_advantage_variance": 2877.054174404978,
+    "avg_loss": -0.0025901276887361747
+  },
+  {
+    "batch_size": 20,
+    "best_avg_reward": -27.937964724501416,
+    "final_avg_reward": -39.62631687572074,
+    "solved_iteration": null,
+    "total_time": 495.04412722587585,
+    "avg_time_per_iteration": 4.950441272258758,
+    "avg_return_std": 65.916603960877,
+    "avg_advantage_variance": 2536.1085592150635,
+    "avg_loss": 0.0016720463356614346
+  },
+  {
+    "batch_size": 50,
+    "best_avg_reward": 28.745868399611076,
+    "final_avg_reward": 24.267495114797825,
+    "solved_iteration": null,
+    "total_time": 1455.0974776744843,
+    "avg_time_per_iteration": 14.550974776744843,
+    "avg_return_std": 77.47111503139628,
+    "avg_advantage_variance": 2762.694224461084,
+    "avg_loss": -0.0010939493366458918
+  },
+  {
+    "batch_size": 100,
+    "best_avg_reward": 74.05899557986591,
+    "final_avg_reward": 74.05899557986591,
+    "solved_iteration": null,
+    "total_time": 3627.0123569965363,
+    "avg_time_per_iteration": 36.270123569965364,
+    "avg_return_std": 69.58038996290963,
+    "avg_advantage_variance": 2249.2540449754674,
+    "avg_loss": -0.011752653426265169
+  }
+]
